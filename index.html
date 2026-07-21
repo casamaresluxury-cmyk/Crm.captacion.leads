@@ -240,6 +240,7 @@
   .stamp.interesado{color:#1F6B3A; border-color:#1F6B3A; background:#D9EFDF; transform:rotate(-3deg) scale(1.02);}
   .stamp.no-interesado{color:#B23222; border-color:#B23222; background:#FADBD5;}
   .stamp.volver{color:#1F5A80; border-color:#1F5A80; background:#D9EAF4;}
+  .stamp.captado{color:#7433A8; border-color:#7433A8; background:#EBDBF5; transform:rotate(-3deg) scale(1.02);}
 
   .entry-meta{
     font-family:'IBM Plex Mono', monospace;
@@ -433,6 +434,7 @@
   .dot.interesado{background:#1F6B3A;}
   .dot.no-interesado{background:#B23222;}
   .dot.volver{background:#1F5A80;}
+  .dot.captado{background:#7433A8;}
 
   .backup-panel{
     display:none;
@@ -515,6 +517,38 @@
   .stamp.cerrado{color:#1F6B3A; border-color:#1F6B3A; background:#D9EFDF; transform:rotate(-3deg) scale(1.02);}
   .stamp.descartado{color:#B23222; border-color:#B23222; background:#FADBD5;}
   .stamp.seguimiento{color:#0F6E68; border-color:#0F6E68; background:#D6EEEC;}
+  .stamp.en-venta{color:#1F5A80; border-color:#1F5A80; background:#D9EAF4;}
+  .stamp.reservada{color:#A6650A; border-color:#A6650A; background:#FBE8C8;}
+  .stamp.vendida{color:#1F6B3A; border-color:#1F6B3A; background:#D9EFDF; transform:rotate(-3deg) scale(1.02);}
+  .stamp.retirada{color:#B23222; border-color:#B23222; background:#FADBD5;}
+
+  .interested-leads{
+    margin-top:10px;
+    padding-top:10px;
+    border-top:1px dashed var(--bg-line);
+  }
+  .interested-leads-title{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px;
+    letter-spacing:0.5px;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin-bottom:6px;
+  }
+  .interested-lead-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:5px 0;
+    border-top:1px dashed var(--bg-line);
+    font-size:13px;
+  }
+  .interested-lead-row:first-child{border-top:none;}
+  .interested-lead-row .ilr-phone{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--ink-soft);
+  }
 
   .lead-sub{
     font-size:13px;
@@ -584,6 +618,7 @@
     <button id="tabCaptacion" class="active">Captación</button>
     <button id="tabLeads">Leads</button>
     <button id="tabSeguimientos">Seguimientos</button>
+    <button id="tabPropiedades">Propiedades</button>
   </div>
 
   <div id="captacionView">
@@ -654,6 +689,7 @@
           <option value="interesado">Interesado</option>
           <option value="no-interesado">No interesado</option>
           <option value="volver">Volver a visitar</option>
+          <option value="captado">Captado</option>
         </select>
       </div>
       <div class="field">
@@ -682,6 +718,7 @@
       <option value="interesado">Interesado</option>
       <option value="no-interesado">No interesado</option>
       <option value="volver">Volver</option>
+      <option value="captado">Captado</option>
     </select>
     <select id="filterZona">
       <option value="">Zona: Todas</option>
@@ -873,6 +910,138 @@
 
     <div id="seguimientosList" class="loading">Cargando seguimientos...</div>
   </div>
+
+  <div id="propiedadesView" style="display:none;">
+    <button class="btn-primary" id="togglePropForm" style="margin-top:16px;">+ Nueva propiedad</button>
+
+    <div class="form-card" id="propFormCard">
+      <div class="form-title" id="propFormTitle">Nueva propiedad</div>
+      <div class="row">
+        <div class="field">
+          <label>Referencia / Alias</label>
+          <input type="text" id="p-alias" placeholder="Ático c/ Mayor 12">
+        </div>
+      </div>
+      <div class="row">
+        <div class="field">
+          <label>Dirección</label>
+          <input type="text" id="p-direccion" placeholder="Calle, número, municipio">
+        </div>
+      </div>
+      <div class="row">
+        <div class="field">
+          <label>Municipio</label>
+          <input type="text" id="p-municipio" placeholder="Martorell, La Sagrera..." list="municipios-list">
+        </div>
+        <div class="field small">
+          <label>Zona</label>
+          <select id="p-zona">
+            <option value="">-</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="field">
+          <label>Tipo de inmueble</label>
+          <select id="p-tipo">
+            <option value="">-</option>
+            <option value="Piso">Piso</option>
+            <option value="Casa/Chalet">Casa/Chalet</option>
+            <option value="Ático">Ático</option>
+            <option value="Dúplex">Dúplex</option>
+            <option value="Local">Local</option>
+            <option value="Terreno">Terreno</option>
+            <option value="Otro">Otro</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Tipo de captación</label>
+          <select id="p-captacion">
+            <option value="">-</option>
+            <option value="Exclusiva">Exclusiva</option>
+            <option value="No exclusiva">No exclusiva</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="field">
+          <label>Precio de salida</label>
+          <input type="text" id="p-precio" placeholder="245.000 €">
+        </div>
+      </div>
+      <div class="row">
+        <div class="field small">
+          <label>Habitaciones</label>
+          <input type="number" id="p-habitaciones" placeholder="3" min="0">
+        </div>
+        <div class="field small">
+          <label>Baños</label>
+          <input type="number" id="p-banos" placeholder="2" min="0">
+        </div>
+        <div class="field small">
+          <label>m²</label>
+          <input type="number" id="p-m2" placeholder="90" min="0">
+        </div>
+      </div>
+      <div class="row">
+        <div class="field">
+          <label>Propietario</label>
+          <input type="text" id="p-propietario-nombre" placeholder="Nombre del propietario">
+        </div>
+        <div class="field">
+          <label>Teléfono propietario</label>
+          <input type="text" id="p-propietario-telefono" placeholder="600 000 000">
+        </div>
+      </div>
+      <div class="row">
+        <div class="field">
+          <label>Estado</label>
+          <select id="p-estado">
+            <option value="en-venta">En venta</option>
+            <option value="reservada">Reservada</option>
+            <option value="vendida">Vendida</option>
+            <option value="retirada">Retirada</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="field">
+          <label>Notas</label>
+          <textarea id="p-notas" placeholder="Estado del inmueble, condiciones, particularidades..."></textarea>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="cancel" id="cancelPropForm">Cancelar</button>
+        <button class="btn-primary" id="saveProp">Guardar propiedad</button>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <input type="text" id="propSearch" placeholder="Buscar por dirección, alias o municipio...">
+      <select id="filterPropEstado">
+        <option value="">Todos</option>
+        <option value="en-venta">En venta</option>
+        <option value="reservada">Reservada</option>
+        <option value="vendida">Vendida</option>
+        <option value="retirada">Retirada</option>
+      </select>
+      <select id="filterPropZona">
+        <option value="">Zona: Todas</option>
+        <option value="1">Zona 1</option>
+        <option value="2">Zona 2</option>
+        <option value="3">Zona 3</option>
+        <option value="4">Zona 4</option>
+      </select>
+    </div>
+
+    <div id="propiedadesList" class="loading">Cargando propiedades...</div>
+
+    <button class="btn-secondary" id="exportPropBtn" style="width:100%; margin-top:6px;">Exportar CSV</button>
+  </div>
 </main>
 
 <div class="toast" id="toast">
@@ -889,8 +1058,6 @@
 <script>
 /* ============================================================
    CONFIGURACIÓN DE FIREBASE
-   Pega aquí el objeto de configuración que te da la consola de
-   Firebase (Configuración del proyecto → Tus apps → SDK config).
    ============================================================ */
 const firebaseConfig = {
   apiKey: "AIzaSyAC9Ml8EaAEW5SXfBUhxIjcJl4YdCxWozA",
@@ -955,6 +1122,9 @@ let viviendas = [];
 let editingLeadId = null;
 let openLeadNoteFormId = null;
 
+let editingPropId = null;
+let openPropNoteFormId = null;
+
 const leadEstadoLabels = {
   'nuevo': 'Nuevo',
   'contactado': 'Contactado',
@@ -970,7 +1140,15 @@ const estadoLabels = {
   'no-en-casa': 'No en casa',
   'interesado': 'Interesado',
   'no-interesado': 'No interesado',
-  'volver': 'Volver a visitar'
+  'volver': 'Volver a visitar',
+  'captado': 'Captado'
+};
+
+const propEstadoLabels = {
+  'en-venta': 'En venta',
+  'reservada': 'Reservada',
+  'vendida': 'Vendida',
+  'retirada': 'Retirada'
 };
 
 function todayStr(){
@@ -1056,6 +1234,7 @@ function startLeadsSync(){
       leads.sort((a,b) => (b.createdAt||0) - (a.createdAt||0));
       renderLeads();
       renderSeguimientos();
+      renderPropiedades();
     },
     error => console.error('Error de sincronización de leads', error)
   );
@@ -1088,8 +1267,9 @@ function startViviendasSync(){
   viviendasRef.onSnapshot(
     snapshot => {
       viviendas = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
-      viviendas.sort((a,b) => (a.direccion||'').localeCompare(b.direccion||'', 'es'));
+      viviendas.sort((a,b) => (b.createdAt||0) - (a.createdAt||0));
       refreshViviendaSelect();
+      renderPropiedades();
     },
     error => console.error('Error de sincronización de viviendas', error)
   );
@@ -1106,12 +1286,26 @@ async function upsertVivienda(id, data){
   }
 }
 
+async function deleteVivienda(id){
+  try{
+    await viviendasRef.doc(id).delete();
+    return true;
+  }catch(e){
+    console.error('Error eliminando vivienda', e);
+    alert('No se pudo eliminar la propiedad. Revisa tu conexión.');
+    return false;
+  }
+}
+
 function refreshViviendaSelect(){
   const select = document.getElementById('l-vivienda');
   if(!select) return;
   const currentValue = select.value;
   select.innerHTML = '<option value="">Selecciona una vivienda...</option>' +
-    viviendas.map(v => `<option value="${v.id}">${escapeHtml(v.alias ? v.alias+' — '+v.direccion : v.direccion)}</option>`).join('');
+    viviendas.map(v => {
+      const label = v.alias ? `${v.alias} — ${v.direccion}` : v.direccion;
+      return `<option value="${v.id}">${escapeHtml(v.precio ? label+' ('+v.precio+')' : label)}</option>`;
+    }).join('');
   if(currentValue && viviendas.some(v=>v.id===currentValue)) select.value = currentValue;
 }
 
@@ -1202,6 +1396,149 @@ function closeLeadForm(){
 
 document.getElementById('toggleLeadForm').addEventListener('click', ()=>openLeadForm(null));
 document.getElementById('cancelLeadForm').addEventListener('click', closeLeadForm);
+
+// ===== Formulario de propiedades =====
+function openPropForm(prop){
+  document.getElementById('propFormCard').classList.add('open');
+  document.getElementById('togglePropForm').style.display = 'none';
+  if(prop){
+    editingPropId = prop.id;
+    document.getElementById('propFormTitle').textContent = 'Editar propiedad';
+    document.getElementById('p-alias').value = prop.alias || '';
+    document.getElementById('p-direccion').value = prop.direccion || '';
+    document.getElementById('p-municipio').value = prop.municipio || '';
+    document.getElementById('p-zona').value = prop.zona || '';
+    document.getElementById('p-tipo').value = prop.tipo || '';
+    document.getElementById('p-captacion').value = prop.tipoCaptacion || '';
+    document.getElementById('p-precio').value = prop.precio || '';
+    document.getElementById('p-habitaciones').value = prop.habitaciones || '';
+    document.getElementById('p-banos').value = prop.banos || '';
+    document.getElementById('p-m2').value = prop.m2 || '';
+    document.getElementById('p-propietario-nombre').value = prop.propietarioNombre || '';
+    document.getElementById('p-propietario-telefono').value = prop.propietarioTelefono || '';
+    document.getElementById('p-estado').value = prop.estado || 'en-venta';
+    document.getElementById('p-notas').value = prop.notas || '';
+  } else {
+    editingPropId = null;
+    document.getElementById('propFormTitle').textContent = 'Nueva propiedad';
+    ['p-alias','p-direccion','p-municipio','p-precio','p-habitaciones','p-banos','p-m2','p-propietario-nombre','p-propietario-telefono','p-notas'].forEach(id=>{
+      document.getElementById(id).value = '';
+    });
+    document.getElementById('p-zona').value = '';
+    document.getElementById('p-tipo').value = '';
+    document.getElementById('p-captacion').value = '';
+    document.getElementById('p-estado').value = 'en-venta';
+  }
+}
+
+function closePropForm(){
+  document.getElementById('propFormCard').classList.remove('open');
+  document.getElementById('togglePropForm').style.display = 'block';
+  editingPropId = null;
+}
+
+document.getElementById('togglePropForm').addEventListener('click', ()=>openPropForm(null));
+document.getElementById('cancelPropForm').addEventListener('click', closePropForm);
+
+document.getElementById('saveProp').addEventListener('click', async ()=>{
+  const direccion = document.getElementById('p-direccion').value.trim();
+  if(!direccion){
+    document.getElementById('p-direccion').focus();
+    return;
+  }
+  const data = {
+    alias: document.getElementById('p-alias').value.trim(),
+    direccion,
+    municipio: document.getElementById('p-municipio').value.trim(),
+    zona: document.getElementById('p-zona').value,
+    tipo: document.getElementById('p-tipo').value,
+    tipoCaptacion: document.getElementById('p-captacion').value,
+    precio: document.getElementById('p-precio').value.trim(),
+    habitaciones: document.getElementById('p-habitaciones').value,
+    banos: document.getElementById('p-banos').value,
+    m2: document.getElementById('p-m2').value,
+    propietarioNombre: document.getElementById('p-propietario-nombre').value.trim(),
+    propietarioTelefono: document.getElementById('p-propietario-telefono').value.trim(),
+    estado: document.getElementById('p-estado').value,
+    notas: document.getElementById('p-notas').value.trim(),
+  };
+  if(editingPropId){
+    await upsertVivienda(editingPropId, data);
+  } else {
+    const id = 'v'+Date.now()+Math.random().toString(36).slice(2,7);
+    await upsertVivienda(id, {
+      fecha: todayStr(),
+      fechaISO: todayISO(),
+      createdAt: Date.now(),
+      ...data
+    });
+  }
+  closePropForm();
+});
+
+document.getElementById('propSearch').addEventListener('input', renderPropiedades);
+document.getElementById('filterPropEstado').addEventListener('change', renderPropiedades);
+document.getElementById('filterPropZona').addEventListener('change', renderPropiedades);
+
+document.getElementById('propiedadesList').addEventListener('click', async (e)=>{
+  const editBtn = e.target.closest('.edit-prop');
+  const delBtn = e.target.closest('.delete-prop');
+  const addNoteBtn = e.target.closest('.addnote-prop');
+  const saveNoteBtn = e.target.closest('.savenote-prop');
+  if(editBtn){
+    const id = editBtn.dataset.id;
+    const prop = viviendas.find(x=>x.id===id);
+    if(prop) openPropForm(prop);
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+  if(delBtn){
+    const id = delBtn.dataset.id;
+    const interesados = leads.filter(l=>l.viviendaId===id).length;
+    if(interesados > 0){
+      const ok = confirm(`Hay ${interesados} lead(s) vinculados a esta propiedad. Si la eliminas, esos leads dejarán de mostrar la vivienda asociada. ¿Eliminar de todas formas?`);
+      if(!ok) return;
+    }
+    await deleteVivienda(id);
+  }
+  if(addNoteBtn){
+    const id = addNoteBtn.dataset.id;
+    openPropNoteFormId = (openPropNoteFormId === id) ? null : id;
+    const box = document.getElementById('propnoteform-'+id);
+    if(box){
+      box.style.display = (openPropNoteFormId === id) ? 'block' : 'none';
+      if(openPropNoteFormId === id) document.getElementById('propnotetext-'+id).focus();
+    }
+  }
+  if(saveNoteBtn){
+    const id = saveNoteBtn.dataset.id;
+    const textarea = document.getElementById('propnotetext-'+id);
+    const texto = textarea.value.trim();
+    if(!texto) return;
+    const prop = viviendas.find(x=>x.id===id);
+    const historial = Array.isArray(prop?.notasSeguimiento) ? [...prop.notasSeguimiento] : [];
+    historial.push({
+      texto,
+      fecha: new Date().toLocaleString('es-ES', {day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit'}),
+      ts: Date.now()
+    });
+    openPropNoteFormId = null;
+    await upsertVivienda(id, { notasSeguimiento: historial });
+  }
+});
+
+document.getElementById('exportPropBtn').addEventListener('click', ()=>{
+  const headers = ['Alias','Dirección','Municipio','Zona','Tipo','Tipo captación','Precio','Habitaciones','Baños','m²','Propietario','Teléfono propietario','Estado','Notas','Leads interesados'];
+  const rows = viviendas.map(v=>{
+    const interesados = leads.filter(l=>l.viviendaId===v.id).map(l=>l.nombre).join(' | ');
+    return [v.alias, v.direccion, v.municipio, v.zona, v.tipo, v.tipoCaptacion, v.precio, v.habitaciones, v.banos, v.m2, v.propietarioNombre, v.propietarioTelefono, propEstadoLabels[v.estado]||v.estado, (v.notas||'').replace(/\n/g,' '), interesados];
+  });
+  const csv = [headers, ...rows].map(r=>r.map(c=>`"${(c||'').toString().replace(/"/g,'""')}"`).join(',')).join('\n');
+  openTextPanel(
+    'Tus propiedades en formato CSV',
+    'Toca "Copiar" y pégalo en una nota o en una hoja de cálculo (Excel/Sheets reconocerán las columnas).',
+    csv
+  );
+});
 
 document.getElementById('viviendaQuickToggle').addEventListener('click', ()=>{
   const open = document.getElementById('viviendaQuickAdd').style.display === 'none';
@@ -1389,7 +1726,7 @@ document.getElementById('viewStreets').addEventListener('click', ()=>{
 });
 
 function switchTab(tabId){
-  const tabs = { tabCaptacion: 'captacionView', tabLeads: 'leadsView', tabSeguimientos: 'seguimientosView' };
+  const tabs = { tabCaptacion: 'captacionView', tabLeads: 'leadsView', tabSeguimientos: 'seguimientosView', tabPropiedades: 'propiedadesView' };
   Object.keys(tabs).forEach(t=>{
     document.getElementById(t).classList.toggle('active', t === tabId);
     document.getElementById(tabs[t]).style.display = (t === tabId) ? 'block' : 'none';
@@ -1398,12 +1735,46 @@ function switchTab(tabId){
 document.getElementById('tabCaptacion').addEventListener('click', ()=>switchTab('tabCaptacion'));
 document.getElementById('tabLeads').addEventListener('click', ()=>switchTab('tabLeads'));
 document.getElementById('tabSeguimientos').addEventListener('click', ()=>switchTab('tabSeguimientos'));
+document.getElementById('tabPropiedades').addEventListener('click', ()=>switchTab('tabPropiedades'));
 
 document.getElementById('list').addEventListener('click', async (e)=>{
   const editBtn = e.target.closest('.edit');
   const delBtn = e.target.closest('.delete');
   const addNoteBtn = e.target.closest('.addnote');
   const saveNoteBtn = e.target.closest('.savenote');
+  const promoteBtn = e.target.closest('.promote-ficha');
+  if(promoteBtn){
+    const id = promoteBtn.dataset.id;
+    const entry = entries.find(x=>x.id===id);
+    if(!entry) return;
+    if(entry.promovidoA){
+      const prop = viviendas.find(x=>x.id===entry.promovidoA);
+      switchTab('tabPropiedades');
+      if(prop) openPropForm(prop);
+      window.scrollTo({top:0, behavior:'smooth'});
+      return;
+    }
+    const propId = 'v'+Date.now()+Math.random().toString(36).slice(2,7);
+    const propData = {
+      alias: '',
+      direccion: [entry.calle, entry.numero].filter(Boolean).join(', '),
+      municipio: entry.municipio || '',
+      zona: entry.zona || '',
+      propietarioNombre: entry.nombre || '',
+      propietarioTelefono: entry.telefono || '',
+      notas: entry.notas || '',
+      estado: 'en-venta',
+      fecha: todayStr(),
+      fechaISO: todayISO(),
+      createdAt: Date.now()
+    };
+    await upsertVivienda(propId, propData);
+    await upsertFicha(id, { promovidoA: propId });
+    switchTab('tabPropiedades');
+    openPropForm({ id: propId, ...propData });
+    window.scrollTo({top:0, behavior:'smooth'});
+    return;
+  }
   if(editBtn){
     const id = editBtn.dataset.id;
     const entry = entries.find(x=>x.id===id);
@@ -1620,6 +1991,9 @@ function renderList(filtered, iso){
       ${notasSeguimiento.length ? `<div class="note-history">${notasSeguimiento.map(n=>`
         <div class="note-entry"><span class="note-date">${n.fecha}</span>${escapeHtml(n.texto)}</div>
       `).join('')}</div>` : ''}
+      ${en.estado === 'captado' ? `<div class="entry-actions">
+        <button class="btn-secondary promote-ficha" data-id="${en.id}" style="width:100%;">${en.promovidoA ? 'Ver propiedad →' : '+ Pasar a Propiedades'}</button>
+      </div>` : ''}
       <div class="entry-actions">
         <button class="edit" data-id="${en.id}">Editar</button>
         <button class="addnote" data-id="${en.id}">+ Nota</button>
@@ -1683,7 +2057,7 @@ function escapeICS(str){
 
 function generateICS(lead){
   const vivienda = viviendaLabel(lead.viviendaId);
-  const uid = 'lead-' + lead.id + '-' + Date.now() + '@captacionzona';
+  const uid = 'lead-' + lead.id + '-' + Date.now() + '@casamares';
   const dtstamp = formatICSDateUTC(new Date());
   const [y, m, d] = lead.cita.split('-').map(Number);
   const allDay = !lead.citaHora;
@@ -1715,7 +2089,7 @@ function generateICS(lead){
   const lines = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
-    'PRODID:-//Captacion Zona//ES',
+    'PRODID:-//Casa Mares//ES',
     'CALSCALE:GREGORIAN',
     'BEGIN:VEVENT',
     'UID:'+uid,
@@ -1887,6 +2261,91 @@ function renderSeguimientos(){
   }
 
   list.innerHTML = filtered.map(l => leadCardHTML(l, iso)).join('');
+}
+
+// ===== Render de Propiedades =====
+function propertyCardHTML(v){
+  const notasSeguimiento = Array.isArray(v.notasSeguimiento) ? [...v.notasSeguimiento].sort((a,b)=>(b.ts||0)-(a.ts||0)) : [];
+  const isOpenNote = openPropNoteFormId === v.id;
+  const lugar = [v.municipio ? escapeHtml(v.municipio) : '', v.zona ? 'Zona '+v.zona : ''].filter(Boolean).join(' · ');
+  const propietario = [v.propietarioNombre, v.propietarioTelefono].filter(Boolean).join(' · ');
+  const interesados = leads.filter(l => l.viviendaId === v.id);
+  return `
+    <div class="entry">
+      <div class="entry-top">
+        <div>
+          ${lugar ? `<div class="entry-lugar">${lugar}</div>` : ''}
+          <div class="entry-addr">${v.alias ? escapeHtml(v.alias) : escapeHtml(v.direccion)}</div>
+          ${v.alias ? `<div class="entry-name">${escapeHtml(v.direccion)}</div>` : ''}
+          ${propietario ? `<div class="lead-sub">${escapeHtml(propietario)}</div>` : ''}
+        </div>
+        <div class="stamp ${v.estado}">${propEstadoLabels[v.estado] || v.estado || ''}</div>
+      </div>
+      <div class="lead-tags">
+        ${v.precio ? `<span class="lead-tag">${escapeHtml(v.precio)}</span>` : ''}
+        ${v.tipo ? `<span class="lead-tag">${escapeHtml(v.tipo)}</span>` : ''}
+        ${v.tipoCaptacion ? `<span class="lead-tag">${escapeHtml(v.tipoCaptacion)}</span>` : ''}
+        ${v.habitaciones ? `<span class="lead-tag">${escapeHtml(v.habitaciones)} hab.</span>` : ''}
+        ${v.banos ? `<span class="lead-tag">${escapeHtml(v.banos)} baños</span>` : ''}
+        ${v.m2 ? `<span class="lead-tag">${escapeHtml(v.m2)} m²</span>` : ''}
+      </div>
+      ${v.notas ? `<div class="entry-notes">${escapeHtml(v.notas)}</div>` : ''}
+      ${notasSeguimiento.length ? `<div class="note-history">${notasSeguimiento.map(n=>`
+        <div class="note-entry"><span class="note-date">${n.fecha}</span>${escapeHtml(n.texto)}</div>
+      `).join('')}</div>` : ''}
+      <div class="interested-leads">
+        <div class="interested-leads-title">Leads interesados (${interesados.length})</div>
+        ${interesados.length === 0 ? `<div style="font-size:13px; color:var(--ink-soft);">Todavía ninguno</div>` : interesados.map(l => `
+          <div class="interested-lead-row">
+            <span>${escapeHtml(l.nombre)} <span style="color:var(--ink-soft); font-size:11px;">(${leadEstadoLabels[l.estado]||l.estado})</span></span>
+            ${l.telefono ? `<span class="ilr-phone">${escapeHtml(l.telefono)}</span>` : ''}
+          </div>
+        `).join('')}
+      </div>
+      <div class="entry-actions">
+        <button class="edit-prop" data-id="${v.id}">Editar</button>
+        <button class="addnote-prop" data-id="${v.id}">+ Nota</button>
+        <button class="delete-prop" data-id="${v.id}">Eliminar</button>
+      </div>
+      <div class="note-form" id="propnoteform-${v.id}" style="${isOpenNote ? '' : 'display:none;'}">
+        <textarea id="propnotetext-${v.id}" placeholder="Escribe la novedad..."></textarea>
+        <button class="btn-primary savenote-prop" data-id="${v.id}" style="margin-top:6px;">Guardar nota</button>
+      </div>
+    </div>`;
+}
+
+function renderPropiedades(){
+  const searchEl = document.getElementById('propSearch');
+  const estadoEl = document.getElementById('filterPropEstado');
+  const zonaEl = document.getElementById('filterPropZona');
+  const list = document.getElementById('propiedadesList');
+  if(!searchEl || !estadoEl || !zonaEl || !list) return;
+
+  const search = searchEl.value.toLowerCase();
+  const filterEstado = estadoEl.value;
+  const filterZona = zonaEl.value;
+
+  let filtered = viviendas.filter(v=>{
+    const matchSearch = !search ||
+      (v.direccion||'').toLowerCase().includes(search) ||
+      (v.alias||'').toLowerCase().includes(search) ||
+      (v.municipio||'').toLowerCase().includes(search);
+    const matchEstado = !filterEstado || v.estado === filterEstado;
+    const matchZona = !filterZona || v.zona === filterZona;
+    return matchSearch && matchEstado && matchZona;
+  });
+
+  list.classList.remove('loading');
+
+  if(filtered.length === 0){
+    list.innerHTML = `<div class="empty">
+      <div class="big">${viviendas.length===0 ? 'Aún no hay propiedades' : 'Sin resultados'}</div>
+      <div>${viviendas.length===0 ? 'Añade tu primera propiedad con "+ Nueva propiedad"' : 'Prueba a cambiar la búsqueda o el filtro'}</div>
+    </div>`;
+    return;
+  }
+
+  list.innerHTML = filtered.map(v => propertyCardHTML(v)).join('');
 }
 
 // El arranque de la sincronización lo controla onAuthStateChanged,
